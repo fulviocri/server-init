@@ -28,16 +28,30 @@ fi
 
 yum -y install yum-utils
 
-
-
 cp /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-eth0:0
-cp /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-eth0:1
-cp /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-eth0:2
-
 cat /dev/null > /etc/sysconfig/network-scripts/ifcfg-eth0:0
-cat /dev/null > /etc/sysconfig/network-scripts/ifcfg-eth0:1
-cat /dev/null > /etc/sysconfig/network-scripts/ifcfg-eth0:2
-
+echo DEVICE="eth0:0" > /etc/sysconfig/network-scripts/ifcfg-eth0:0
+echo BOOTPROTO=static > /etc/sysconfig/network-scripts/ifcfg-eth0:0
+echo IPADDR="94.23.69.56" > /etc/sysconfig/network-scripts/ifcfg-eth0:0
+echo NETMASK="255.255.255.255" > /etc/sysconfig/network-scripts/ifcfg-eth0:0
+echo ONBOOT=yes > /etc/sysconfig/network-scripts/ifcfg-eth0:0
 ifup eth0:0
+
+cp /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-eth0:1
+cat /dev/null > /etc/sysconfig/network-scripts/ifcfg-eth0:1
+echo DEVICE="eth0:1" > /etc/sysconfig/network-scripts/ifcfg-eth0:1
+echo BOOTPROTO=static > /etc/sysconfig/network-scripts/ifcfg-eth0:1
+echo IPADDR="94.23.69.125" > /etc/sysconfig/network-scripts/ifcfg-eth0:1
+echo NETMASK="255.255.255.255" > /etc/sysconfig/network-scripts/ifcfg-eth0:1
+echo ONBOOT=yes > /etc/sysconfig/network-scripts/ifcfg-eth0:1
 ifup eth0:1
+
+
+cp /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-eth0:2
+cat /dev/null > /etc/sysconfig/network-scripts/ifcfg-eth0:2
+echo DEVICE="eth0:2" > /etc/sysconfig/network-scripts/ifcfg-eth0:2
+echo BOOTPROTO=static > /etc/sysconfig/network-scripts/ifcfg-eth0:2
+echo IPADDR="94.23.69.171" > /etc/sysconfig/network-scripts/ifcfg-eth0:2
+echo NETMASK="255.255.255.255" > /etc/sysconfig/network-scripts/ifcfg-eth0:2
+echo ONBOOT=yes > /etc/sysconfig/network-scripts/ifcfg-eth0:2
 ifup eth0:2
