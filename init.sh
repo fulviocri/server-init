@@ -108,10 +108,12 @@ echo '--> CONFIGURING HOSTNAME...'
 echo '************************************************************'
 echo ''
 
+public_ip=$(hostname -i)
+
 cat /dev/null > /etc/hosts
 cat <<EOT >> /etc/hosts
 127.0.0.1	localhost
-151.80.145.36	srv1.trustek.it		srv1
+$public_ip	srv1.trustek.it		srv1
 EOT
 
 cat /dev/null > /etc/hostname
@@ -210,6 +212,9 @@ fi
 if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
 	tmux attach -t default || tmux new -s default
 fi
+cd
+clear
+w
 EOT
 
 echo ''
