@@ -24,13 +24,19 @@ if [ "x$(id -u)" != 'x0' ]; then
     exit 1
 fi
 
+read -p 'Would you like to continue? [y/n] ' CONT
+if [ "$CONT" != 'y' ] && [ "$CONT" != 'Y'  ]; then
+    echo 'Goodbye'
+    exit 1
+fi
+
 echo ''
 echo '************************************************************'
 echo '--> CHANGING ROOT PASSWORD...'
 echo '************************************************************'
 echo ''
 
-read -p "Do you want to change the password for user root? (y/n)? " CONT
+read -p "Do you want to change the password for user root? [y/n] " CONT
 if [ "$CONT" = "y" ]; then
   read -sp 'Enter the new password for root user: ' npasswd
   echo "$npasswd" | passwd --stdin root
@@ -206,11 +212,11 @@ alias mv='mv -i'
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
-	. /etc/bashrc
+    . /etc/bashrc
 fi
 
 if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
-	tmux attach -t default || tmux new -s default
+    tmux attach -t default || tmux new -s default
 fi
 cd
 clear
@@ -241,20 +247,19 @@ echo '--> CREATING NEW ADMIN USER...'
 echo '************************************************************'
 echo ''
 
-read -p "Do you want to create a new admin account? (y/n)? " CONT
+read -p "Do you want to create a new admin account? [y/n] " CONT
 if [ "$CONT" = "y" ]; then
-	read -p 'Enter the new admin username: ' nadmin
-	useradd -m $nadmin
-	usermod -aG wheel $nadmin
-	echo ''
+    read -p 'Enter the new admin username: ' nadmin
+    useradd -m $nadmin
+    usermod -aG wheel $nadmin
+    echo ''
 	
-	# Change new admin password
-	read -p "Do you want to change the password for user $nadmin ? (y/n)? " CONT
-	if [ "$CONT" = "y" ]; then
-		echo ''
-		read -sp 'Enter the new password for user: ' npasswd
-		echo "$npasswd" | passwd --stdin $nadmin
-	fi
+    # Change new admin password
+    read -p "Do you want to change the password for user $nadmin? [y/n]  " CONT
+    if [ "$CONT" = "y" ]; then
+	read -sp 'Enter the new password for user: ' npasswd
+	echo "$npasswd" | passwd --stdin $nadmin
+    fi
 fi
 
 echo ''
@@ -267,11 +272,11 @@ echo '' >> /etc/ssh/sshd_config
 echo 'ListenAddress 151.80.145.36' >> /etc/ssh/sshd_config
 
 # Prevent SSH root access
-read -p "Do you want to deny ssh access to root account? (y/n)? " CONT
+read -p "Do you want to deny ssh access to root account? [y/n] " CONT
 if [ "$CONT" = "y" ]; then
-	echo 'PermitRootLogin no'  >> /etc/ssh/sshd_config
+    echo 'PermitRootLogin no'  >> /etc/ssh/sshd_config
 else
-	echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
+    echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
 fi
 
 systemctl restart sshd
@@ -303,7 +308,7 @@ echo '--> ALL DONE '
 echo '************************************************************'
 echo ''
 
-read -p "Do you want to reboot the system? (y/n)? " CONT
+read -p "Do you want to reboot the system? [y/n] " CONT
 if [ "$CONT" = "y" ]; then
-  reboot now
+    reboot now
 fi
