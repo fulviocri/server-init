@@ -1,5 +1,5 @@
 #!/bin/bash
-# TRUSTeK Server Init Script v1.5
+# TRUSTeK Server Init Script v1.8
 # https://trustek.it
 
 clear
@@ -221,6 +221,8 @@ fi
 cd
 clear
 w
+echo ''
+echo ''
 EOT
 
 echo ''
