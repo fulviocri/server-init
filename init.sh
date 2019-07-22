@@ -28,6 +28,7 @@ fi
 
 yum -y install yum-utils
 
+# Setting eth0:0
 cp /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-eth0:0
 cat /dev/null > /etc/sysconfig/network-scripts/ifcfg-eth0:0
 echo DEVICE="eth0:0" > /etc/sysconfig/network-scripts/ifcfg-eth0:0
@@ -37,6 +38,7 @@ echo NETMASK="255.255.255.255" > /etc/sysconfig/network-scripts/ifcfg-eth0:0
 echo ONBOOT=yes > /etc/sysconfig/network-scripts/ifcfg-eth0:0
 ifup eth0:0
 
+# Setting eth0:1
 cp /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-eth0:1
 cat /dev/null > /etc/sysconfig/network-scripts/ifcfg-eth0:1
 echo DEVICE="eth0:1" > /etc/sysconfig/network-scripts/ifcfg-eth0:1
@@ -46,7 +48,7 @@ echo NETMASK="255.255.255.255" > /etc/sysconfig/network-scripts/ifcfg-eth0:1
 echo ONBOOT=yes > /etc/sysconfig/network-scripts/ifcfg-eth0:1
 ifup eth0:1
 
-
+# Setting eth0:2
 cp /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-eth0:2
 cat /dev/null > /etc/sysconfig/network-scripts/ifcfg-eth0:2
 echo DEVICE="eth0:2" > /etc/sysconfig/network-scripts/ifcfg-eth0:2
@@ -55,3 +57,10 @@ echo IPADDR="94.23.69.171" > /etc/sysconfig/network-scripts/ifcfg-eth0:2
 echo NETMASK="255.255.255.255" > /etc/sysconfig/network-scripts/ifcfg-eth0:2
 echo ONBOOT=yes > /etc/sysconfig/network-scripts/ifcfg-eth0:2
 ifup eth0:2
+
+cat /dev/null > /etc/hosts
+echo 127.0.0.1      localhost > /etc/hosts
+echo 192.168.0.100  srv1.trustek.it    srv1 > /etc/hosts
+
+cat /dev/null > /etc/hostname
+echo srv1.trustek.it > /etc/hostname
