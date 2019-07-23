@@ -290,9 +290,9 @@ echo '************************************************************'
 echo ''
 
 systemctl stop firewalld.service
-systemctl mask firewalld.service
-systemctl disable firewalld.service
-systemctl stop firewalld.service
+#systemctl mask firewalld.service
+#systemctl disable firewalld.service
+#systemctl stop firewalld.service
 
 cat /dev/null > /etc/fail2ban/jail.local
 cat <<EOT >> /etc/fail2ban/jail.local
@@ -303,6 +303,7 @@ EOT
 
 systemctl enable fail2ban.service
 systemctl start fail2ban.service
+systemctl start firewalld.service
 
 echo ''
 echo '************************************************************'
