@@ -68,6 +68,11 @@ echo '--> CONFIGURING NETWORK INTERFACES...'
 echo '************************************************************'
 echo ''
 
+echo 'Disabling NetworkManager...'
+systemctl stop NetworkManager
+systemctl disable NetworkManager
+systemctl restart network
+
 echo 'Setting eth0:0...'
 cp /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-eth0:0
 cat /dev/null > /etc/sysconfig/network-scripts/ifcfg-eth0:0
