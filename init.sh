@@ -52,17 +52,17 @@ function StartTheProcess() {
 	echo "$ROOT_PWD" | passwd --stdin root
 	
 	echo " "
-	read -r -p 'Enter the new admin username: ' NADMIN
+	read -r -p "Enter the new admin username: " NADMIN
 	useradd -m $NADMIN
 	usermod -aG wheel $NADMIN
 	
 	echo " "
-	read -r -p 'Enter new admin password: ' NADMIN_PWD
+	read -r -p "Enter new admin password: " NADMIN_PWD
 	echo "$NADMIN_PWD" | passwd --stdin $NADMIN
 	
 	echo " "
 	read -r -p "What is the IP Address for shared services? " vSharedIPAddress
-	read -r -p "What is the IP Address for NAMED DNS Server " vNamedIPAddress
+	read -r -p "What is the IP Address for BIND9 DNS Server " vDNSIPAddress
 	read -r -p "What e-mail address would you like to receive Monit and VestaCP alerts to? " vEmail
 	read -r -p "Please type a password to use with VestaCP and Monit: " vPassword
 	read -r -p "Monit needs an SMTP server to use to send email alerts properly. What's your SMTP Hostname? " vSMTPHostname
@@ -179,7 +179,15 @@ function StartTheProcess() {
 		/usr/local/vesta/bin/v-change-dns-domain-ip admin $vHostname $IPAddress
 
 		/usr/local/vesta/bin/v-add-sys-ip $vSharedIPAddress 255.255.255.255
-		/usr/local/vesta/bin/v-add-sys-ip $vNamedIPAddress 255.255.255.255
+		/usr/local/vesta/bin/v-add-sys-ip $vDNSIPAddress 255.255.255.255
+		
+		sed -i 's/8083;/8443;/' /usr/local/vesta/nginx/conf/nginx.conf
+		/usr/local/vesta/bin/v-add-firewall-rule ACCEPT 0.0.0.0/0 8443 TCP
+		/usr/local/vesta/bin/v-delete-firewall-rule 2
+		systemctl restart vesta
+		
+		echo "local_interfaces = <; 127.0.0.1 ; $vSharedIPAddress" >> /etc/exim/exim.conf
+		systemctl restart exim
 
 	# ---------------------------------
 
@@ -188,7 +196,6 @@ function StartTheProcess() {
 		curl https://raw.githubusercontent.com/SS88UK/VestaCP-Server-Installer/master/CentOS7/dnsbl.conf > /etc/exim/dnsbl.conf
 		curl https://raw.githubusercontent.com/SS88UK/VestaCP-Server-Installer/master/CentOS7/custom_SA-rules.cf > /etc/mail/spamassassin/custom_SA-rules.cf
 		sed -i 's/rfc1413_query_timeout = 5s/rfc1413_query_timeout = 0s/' /etc/exim/exim.conf
-		echo "local_interfaces = <; 127.0.0.1 ; $vSharedIPAddress" >> /etc/exim/exim.conf
 		curl https://raw.githubusercontent.com/SS88UK/VestaCP-Server-Installer/master/CentOS7/90-quota.conf > /etc/dovecot/conf.d/90-quota.conf
 		sed -i 's/mail_plugins = .*/mail_plugins = $mail_plugins autocreate quota imap_quota/' /etc/dovecot/conf.d/20-imap.conf
 		echo "mail_max_userip_connections = 50" >> /etc/dovecot/conf.d/10-mail.conf
